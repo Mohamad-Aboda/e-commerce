@@ -12,12 +12,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-0e1ml9@(u0h8l(v7qi!r5+28fz0jkg-kq_3m(xk_wr!31(8k^9'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+SECRET_KEY = config('SECRET_KEY')
+DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = []
+
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0',]
 
 
 # Application definition
@@ -135,17 +135,36 @@ REST_FRAMEWORK = {
     # ... other settings ...
 }
 
-
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': config('DB_NAME'),
-        'USER': config('DB_USER'),
-        'PASSWORD': config('DB_PASSWORD'),
-        'HOST': config('DB_HOST'),
-        'PORT': '',
+if os.environ.get('DOCKER_ENV') == 'true':
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': config('DB_NAME'),
+            'USER': config('DB_USER'),
+            'PASSWORD': config('DB_PASSWORD'),
+            'HOST': config('DB_HOST'),
+            'PORT': config('DB_PORT'),
+        }
     }
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': config('DB_NAME'),
+            'USER': config('DB_USER'),
+            'PASSWORD': config('DB_PASSWORD'),
+            'HOST': 'localhost',
+            'PORT': config('DB_PORT'),
+        }
+
+
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': datetime.timedelta(minutes=60),  # Set the access token lifetime
+    'SLIDING_TOKEN_REFRESH_LIFETIME': datetime.timedelta(days=1),  # Set the refresh token lifetime
+    'SLIDING_TOKEN_LIFETIME': datetime.timedelta(days=1),  # Set the sliding token lifetime
+    'SLIDING_TOKEN_REFRESH_LIFETIME': datetime.timedelta(days=7),  # Set the sliding token refresh lifetime
+    'SLIDING_TOKEN_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=30),  # Set the sliding token refresh expiration delta
 }
 
 
