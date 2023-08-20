@@ -1,6 +1,0 @@
-1- sudo su postgres
-2- psql
-3- CREATE DATABASE <database_name>;
-4- CREATE ROLE <database_username> WITH LOGIN PASSWORD '<database_password'>;
-5- GRANT ALL PRIVILEGES ON DATABASE <database_name> TO <database_username>;
-6- ALTER USER <database_username> CREATEDB;
