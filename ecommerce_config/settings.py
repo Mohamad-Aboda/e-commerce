@@ -156,6 +156,7 @@ else:
             'HOST': 'localhost',
             'PORT': config('DB_PORT'),
         }
+    }
 
 
 
@@ -167,12 +168,3 @@ SIMPLE_JWT = {
     'SLIDING_TOKEN_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=30),  # Set the sliding token refresh expiration delta
 }
 
-
-
-SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': datetime.timedelta(minutes=60),  # Set the access token lifetime
-    'SLIDING_TOKEN_REFRESH_LIFETIME': datetime.timedelta(days=1),  # Set the refresh token lifetime
-    'SLIDING_TOKEN_LIFETIME': datetime.timedelta(days=1),  # Set the sliding token lifetime
-    'SLIDING_TOKEN_REFRESH_LIFETIME': datetime.timedelta(days=7),  # Set the sliding token refresh lifetime
-    'SLIDING_TOKEN_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=30),  # Set the sliding token refresh expiration delta
-}
