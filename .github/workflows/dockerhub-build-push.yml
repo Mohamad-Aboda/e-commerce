@@ -24,5 +24,5 @@ jobs:
         run: |
           docker buildx create --use
           echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
-          docker buildx build -t abodaa/ecommerce-project_web:v0 -f Dockerfile .
+          docker buildx build -t abodaa/ecommerce-project_web:v0 -f Dockerfile . --no-cache
           docker push abodaa/ecommerce-project_web:v0
