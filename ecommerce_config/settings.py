@@ -137,28 +137,35 @@ REST_FRAMEWORK = {
     # ... other settings ...
 }
 
-if os.environ.get('DOCKER_ENV') == 'true':
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': 'ecommerce_db',
-            'USER': 'ecommerce_user',
-            'PASSWORD': 'dbpassword',
-            'HOST': 'db',
-            'PORT': '5432',
-        }
+# if os.environ.get('DOCKER_ENV') == 'true':
+#     DATABASES = {
+#         'default': {
+#             'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#             'NAME': 'ecommerce_db',
+#             'USER': 'ecommerce_user',
+#             'PASSWORD': 'dbpassword',
+#             'HOST': 'db',
+#             'PORT': '5432',
+#         }
+#     }
+# else:
+#     DATABASES = {
+#         'default': {
+#             'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#             'NAME': 'ecommerce_db',
+#             'USER': 'ecommerce_user',
+#             'PASSWORD': 'dbpassword',
+#             'HOST': 'localhost',
+#             'PORT': '5432',
+#         }
+#     }
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': 'ecommerce_db',
-            'USER': 'ecommerce_user',
-            'PASSWORD': 'dbpassword',
-            'HOST': 'localhost',
-            'PORT': '5432',
-        }
-    }
+}
 
 
 SIMPLE_JWT = {
