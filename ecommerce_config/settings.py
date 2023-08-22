@@ -13,8 +13,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 
-SECRET_KEY = config('SECRET_KEY')
-DEBUG = config('DEBUG', default=False, cast=bool)
+# SECRET_KEY = config('SECRET_KEY')
+# DEBUG = config('DEBUG', default=False, cast=bool)
+SECRET_KEY = 'django-insecure-0e1ml9@(u0h8l(v7qi!r5+28fz0jkg-kq_3m(xk_wr!31(8k^9'
+DEBUG = True
 
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0',]
@@ -139,25 +141,24 @@ if os.environ.get('DOCKER_ENV') == 'true':
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': config('DB_NAME'),
-            'USER': config('DB_USER'),
-            'PASSWORD': config('DB_PASSWORD'),
-            'HOST': config('DB_HOST'),
-            'PORT': config('DB_PORT'),
+            'NAME': 'ecommerce_db',
+            'USER': 'ecommerce_user',
+            'PASSWORD': 'dbpassword',
+            'HOST': 'db',
+            'PORT': '5432',
         }
     }
 else:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': config('DB_NAME'),
-            'USER': config('DB_USER'),
-            'PASSWORD': config('DB_PASSWORD'),
+            'NAME': 'ecommerce_db',
+            'USER': 'ecommerce_user',
+            'PASSWORD': 'dbpassword',
             'HOST': 'localhost',
-            'PORT': config('DB_PORT'),
+            'PORT': '5432',
         }
     }
-
 
 
 SIMPLE_JWT = {
