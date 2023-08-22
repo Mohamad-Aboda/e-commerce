@@ -19,9 +19,16 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
+
+      - name: Get short Git commit hash
+        id: git_commit
+        run: echo "::set-output name=hash::$(git rev-parse --short HEAD)"
+
+
       - name: Build and push Docker image to Docker Hub
         run: |
           echo "building images in progress..."
-          docker build -t abodaa/ecommerce-project_web:latest -f Dockerfile .
+          docker build -t abodaa/ecommerce-project_web:${{ steps.git_commit.outputs.hash }} -f Dockerfile .
           echo "pushing images in progress..."
-          docker push abodaa/ecommerce-project_web:latest
+          docker push abodaa/ecommerce-project_web:${{ steps.git_commit.outputs.hash }}
+
