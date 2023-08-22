@@ -30,3 +30,4 @@ jobs:
           docker build -t abodaa/ecommerce-project_web:${{ steps.git_commit.outputs.hash }} -f Dockerfile .
           echo "pushing images in progress..."
           docker push abodaa/ecommerce-project_web:${{ steps.git_commit.outputs.hash }}
+
