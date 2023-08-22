@@ -3,7 +3,7 @@ name: Docker Build and Push To DockerHub Container Registry
 on:
   push:
     branches:
-      - master
+      - '*'
 
 jobs:
   build-and-push:
