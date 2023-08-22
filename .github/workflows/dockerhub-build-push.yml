@@ -13,16 +13,15 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
+      - name: Set up Docker CLI
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build and push Docker image to Docker Hub
-        env:
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
         run: |
-          docker buildx create --use
-          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
-          docker buildx build -t abodaa/ecommerce-project_web:latest -f Dockerfile . --no-cache
+          echo "building images in progress..."
+          docker build -t abodaa/ecommerce-project_web:latest -f Dockerfile .
+          echo "pushing images in progress..."
           docker push abodaa/ecommerce-project_web:latest
