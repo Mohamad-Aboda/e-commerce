@@ -2,7 +2,7 @@ version: '3'
 services:
   db:
     image: postgres:13
-    env_file: .env
+    env_file: .env  # load from envs
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
@@ -12,7 +12,7 @@ services:
       context: .
       dockerfile: Dockerfile
     command: python manage.py runserver 0.0.0.0:8000
-    env_file: .env
+    env_file: .env  # load from envs
     volumes:
       - .:/app
     ports:
