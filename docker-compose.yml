@@ -7,19 +7,12 @@ services:
       - postgres_data:/var/lib/postgresql/data
     ports:
       - "5433:5432"
-    environment:
-      POSTGRES_DB: ${DB_NAME}
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
   web:
     build:
       context: .
       dockerfile: Dockerfile
     command: python manage.py runserver 0.0.0.0:8000
-    env_file: .env # read from envs 
-    environment:
-      - DOCKER_ENV=true
-
+    env_file: .env
     volumes:
       - .:/app
     ports:
