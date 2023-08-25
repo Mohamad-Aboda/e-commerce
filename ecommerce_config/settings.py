@@ -31,8 +31,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # LOCAL APPS 
-    'accounts', 
-
+    'categories',
+    'accounts',
+    'customers',
+    'products',
+    'orders',
 
     # 3rd party apps
     'rest_framework',
