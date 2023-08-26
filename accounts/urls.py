@@ -5,11 +5,11 @@ from .apis import CreateUserAPIView, UserRetriveUpdateAPIView
 
 app_name = 'accounts'
 urlpatterns = [
-    path('create/', CreateUserAPIView.as_view(), name='create-user'),
-    path('update/', UserRetriveUpdateAPIView.as_view(), name='update-user'),
+    path('user/create/', CreateUserAPIView.as_view(), name='create-user'),
+    path('user/update/', UserRetriveUpdateAPIView.as_view(), name='update-user'),
 
 
-    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),  # Obtain JWT token
-    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),  # Refresh JWT token
+    path('user/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),  # Obtain JWT token
+    path('user/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),  # Refresh JWT token
 
 ]
