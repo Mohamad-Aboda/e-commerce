@@ -6,223 +6,469 @@
 	},
 	"item": [
 		{
-			"name": "create user",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"email\":\"test2@gmai.com\",\n    \"first_name\":\"test2\",\n    \"last_name\":\"user\",\n    \"password\":\"test123\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+			"name": "categories",
+			"item": [
+				{
+					"name": "List All Categories",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/list-create/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"list-create",
+								""
+							]
 						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "http://127.0.0.1:8000/user/create/",
-					"protocol": "http",
-					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
-					],
-					"port": "8000",
-					"path": [
-						"user",
-						"create",
-						""
-					]
+				{
+					"name": "Create Categorie",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjkzMDQ5NjE1LCJpYXQiOjE2OTMwNDYwMTUsImp0aSI6IjUxMGE2YmZjODEzNzQ4M2VhOWE3YjdmMjQ2MmI4YmUzIiwidXNlcl9pZCI6NH0.cmDOssGArZnZpbykvSIvSS1lTojzvagvLAaJVW8lRhU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\":\"cat1 name\",\n    \"description\":\"cat1 desc\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/list-create/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"list-create",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Single Categorie",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjkzMDQ5NjE1LCJpYXQiOjE2OTMwNDYwMTUsImp0aSI6IjUxMGE2YmZjODEzNzQ4M2VhOWE3YjdmMjQ2MmI4YmUzIiwidXNlcl9pZCI6NH0.cmDOssGArZnZpbykvSIvSS1lTojzvagvLAaJVW8lRhU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/retrive-update-delete/8/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"retrive-update-delete",
+								"8",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List Single Categorie",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/retrive-update-delete/8/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"retrive-update-delete",
+								"8",
+								""
+							],
+							"query": [
+								{
+									"key": "pk",
+									"value": "1",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Full Update Categorie",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjkzMDQ5NjE1LCJpYXQiOjE2OTMwNDYwMTUsImp0aSI6IjUxMGE2YmZjODEzNzQ4M2VhOWE3YjdmMjQ2MmI4YmUzIiwidXNlcl9pZCI6NH0.cmDOssGArZnZpbykvSIvSS1lTojzvagvLAaJVW8lRhU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\":\"cat6 updated by admin\",\n    \"description\":\"cat6 desc updated by admin\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/retrive-update-delete/8/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"retrive-update-delete",
+								"8",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Partial Update Categorie",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjkzMDQ5NjE1LCJpYXQiOjE2OTMwNDYwMTUsImp0aSI6IjUxMGE2YmZjODEzNzQ4M2VhOWE3YjdmMjQ2MmI4YmUzIiwidXNlcl9pZCI6NH0.cmDOssGArZnZpbykvSIvSS1lTojzvagvLAaJVW8lRhU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"description\":\"cat6 desc updated by admin\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/retrive-update-delete/8/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"retrive-update-delete",
+								"8",
+								""
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
 		},
 		{
-			"name": "token",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"email\":\"test@gmail.com\",\n    \"password\":\"test123\"\n\n}\n",
-					"options": {
-						"raw": {
-							"language": "json"
+			"name": "accounts",
+			"item": [
+				{
+					"name": "Create User",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\":\"test1@gmail.com\",\n    \"first_name\":\"test1\",\n    \"last_name\":\"user\",\n    \"password\":\"test123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/user/create/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"user",
+								"create",
+								""
+							]
 						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "http://127.0.0.1:8000/user/obtain-token/",
-					"protocol": "http",
-					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
-					],
-					"port": "8000",
-					"path": [
-						"user",
-						"obtain-token",
-						""
-					]
+				{
+					"name": "Pair Token",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"test0@gmail.com\",\n    \"first_name\": \"test0\"\n}\n\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/user/token/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"user",
+								"token",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh Token",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"refresh\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTY5MjU3MTQ4MCwiaWF0IjoxNjkyNDg1MDgwLCJqdGkiOiIwNDQ1ODk4ZmEwMzY0OGQ0YTI4MmY5MTQyYzcwMmNkOCIsInVzZXJfaWQiOjV9.AESerub4YJQpbi6REtZkPQtGXqpp9-qqGR7Va5A97R4\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/user/token/refresh/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"user",
+								"token",
+								"refresh",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List User Info",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjkyNDg1MDQ1LCJpYXQiOjE2OTI0ODE0NDUsImp0aSI6IjBhNjUwYzQ3NGMwNzQ5ZmViZGQyY2U0NWVhZWFhYWIzIiwidXNlcl9pZCI6NX0.tj3KKpqYlT627rQMNUM2U28yH8v7X2DOXjO1uvskoXw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJ1c2VybmFtZSI6InRlc3RAZ21haWwuY29tIiwiZXhwIjoxNjkyNDgyNjI5LCJlbWFpbCI6InRlc3RAZ21haWwuY29tIiwib3JpZ19pYXQiOjE2OTI0Nzk2Mjl9.rYmHzSWd1jU8NreK5DXaNN-vgi5khiB1zxxS8N5ZUXE",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/user/update/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"user",
+								"update",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Full Update User Info",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjkyNDg1MDQ1LCJpYXQiOjE2OTI0ODE0NDUsImp0aSI6IjBhNjUwYzQ3NGMwNzQ5ZmViZGQyY2U0NWVhZWFhYWIzIiwidXNlcl9pZCI6NX0.tj3KKpqYlT627rQMNUM2U28yH8v7X2DOXjO1uvskoXw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 5,\n    \"email\": \"test4@gmail.com\",\n    \"first_name\": \"test4\",\n    \"last_name\": \"user\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/user/update/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"user",
+								"update",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Partial Update User Info",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjkyNDg4NjgwLCJpYXQiOjE2OTI0ODUwODAsImp0aSI6IjAxMGY1MTNjMTYwMTQ4NGQ5MzRkYTBiZWQyZTM5YThkIiwidXNlcl9pZCI6NX0.qcZATZMtnyQnbraKhO9XF4jsVBdBOtA-xv-_ZveV728",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"last_name\":\"partial updated last nmae\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/user/update/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"user",
+								"update",
+								""
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
-		},
-		{
-			"name": "list user info",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjkyNDg1MDQ1LCJpYXQiOjE2OTI0ODE0NDUsImp0aSI6IjBhNjUwYzQ3NGMwNzQ5ZmViZGQyY2U0NWVhZWFhYWIzIiwidXNlcl9pZCI6NX0.tj3KKpqYlT627rQMNUM2U28yH8v7X2DOXjO1uvskoXw",
-							"type": "string"
-						}
-					]
-				},
-				"method": "GET",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJ1c2VybmFtZSI6InRlc3RAZ21haWwuY29tIiwiZXhwIjoxNjkyNDgyNjI5LCJlbWFpbCI6InRlc3RAZ21haWwuY29tIiwib3JpZ19pYXQiOjE2OTI0Nzk2Mjl9.rYmHzSWd1jU8NreK5DXaNN-vgi5khiB1zxxS8N5ZUXE",
-						"type": "text",
-						"disabled": true
-					}
-				],
-				"url": {
-					"raw": "http://127.0.0.1:8000/user/update/",
-					"protocol": "http",
-					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
-					],
-					"port": "8000",
-					"path": [
-						"user",
-						"update",
-						""
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "full update user info",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjkyNDg1MDQ1LCJpYXQiOjE2OTI0ODE0NDUsImp0aSI6IjBhNjUwYzQ3NGMwNzQ5ZmViZGQyY2U0NWVhZWFhYWIzIiwidXNlcl9pZCI6NX0.tj3KKpqYlT627rQMNUM2U28yH8v7X2DOXjO1uvskoXw",
-							"type": "string"
-						}
-					]
-				},
-				"method": "PUT",
-				"header": [],
-				"url": {
-					"raw": "http://127.0.0.1:8000/user/update/",
-					"protocol": "http",
-					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
-					],
-					"port": "8000",
-					"path": [
-						"user",
-						"update",
-						""
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "refresh token",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"refresh\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTY5MjU3MTQ4MCwiaWF0IjoxNjkyNDg1MDgwLCJqdGkiOiIwNDQ1ODk4ZmEwMzY0OGQ0YTI4MmY5MTQyYzcwMmNkOCIsInVzZXJfaWQiOjV9.AESerub4YJQpbi6REtZkPQtGXqpp9-qqGR7Va5A97R4\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://127.0.0.1:8000/user/api/token/refresh/",
-					"protocol": "http",
-					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
-					],
-					"port": "8000",
-					"path": [
-						"user",
-						"api",
-						"token",
-						"refresh",
-						""
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "partial update user info",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjkyNDg4NjgwLCJpYXQiOjE2OTI0ODUwODAsImp0aSI6IjAxMGY1MTNjMTYwMTQ4NGQ5MzRkYTBiZWQyZTM5YThkIiwidXNlcl9pZCI6NX0.qcZATZMtnyQnbraKhO9XF4jsVBdBOtA-xv-_ZveV728",
-							"type": "string"
-						}
-					]
-				},
-				"method": "PATCH",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"last_name\":\"partial updated last nmae\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://127.0.0.1:8000/user/update/",
-					"protocol": "http",
-					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
-					],
-					"port": "8000",
-					"path": [
-						"user",
-						"update",
-						""
-					]
-				}
-			},
-			"response": []
+			]
 		}
 	]
 }
