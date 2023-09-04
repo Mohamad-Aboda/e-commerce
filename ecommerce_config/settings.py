@@ -171,3 +171,5 @@ SIMPLE_JWT = {
     'SLIDING_TOKEN_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=30),  # Set the sliding token refresh expiration delta
 }
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
