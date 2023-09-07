@@ -5,7 +5,8 @@ import pytest
 
 
 @pytest.mark.django_db
-class TestCategoryUpdate:
+class TestCategoryCreate:
+
 
     def test_admin_create_category(self, api_client, create_category, admin_user):
         category = {'name': 'Test Category', 'description': 'This is a test category.'}

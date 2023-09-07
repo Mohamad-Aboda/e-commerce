@@ -2,31 +2,92 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, generics
 from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.permissions import (
+    IsAuthenticated,
+    AllowAny,
+    IsAuthenticatedOrReadOnly,
+)
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 
 from .models import Product, ProductImage
 from categories.models import Category
 from .utils import multiple_image_upload
-from .serializers import ProductSerializer, ProductImageSerializer
+from .serializers import (
+    ProductListCreateSerializer,
+    ProductImageSerializer,
+    ProductRetrieveUpdateDestroySerializer,
+)
+from .permissions import IsOwnerOrReadOnly
 
 
 class ProductListCreateView(APIView):
+    def get_permissions(self):
+        if self.request.method == "POST":
+            permission_classes = [IsAuthenticated]
+        else:
+            permission_classes = [AllowAny]
+        return [permission() for permission in permission_classes]
+
+    @swagger_auto_schema(
+        responses={status.HTTP_200_OK: ProductListCreateSerializer(many=True)}
+    )
     def get(self, request, *args, **kwargs):
         products = Product.objects.all()
-        serializer = ProductSerializer(products, many=True)
+        serializer = ProductListCreateSerializer(products, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-
+    @swagger_auto_schema(
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            properties={
+                "name": openapi.Schema(
+                    type=openapi.TYPE_STRING, description="Product name"
+                ),
+                "description": openapi.Schema(
+                    type=openapi.TYPE_STRING, description="Product description"
+                ),
+                "price": openapi.Schema(
+                    type=openapi.TYPE_NUMBER, description="Product price"
+                ),
+                "category": openapi.Schema(
+                    type=openapi.TYPE_STRING, description="Product category"
+                ),
+            },
+        ),
+        responses={
+            201: "Created",
+            400: "Bad Request",
+        },
+        operation_summary="Create a new product",
+        operation_description="Create a new product with the given details.",
+        manual_parameters=[
+            openapi.Parameter(
+                name="Authorization",
+                in_=openapi.IN_HEADER,
+                type=openapi.TYPE_STRING,
+                description="Bearer token: 'Bearer {token}'",
+            ),
+        ],
+    )
     def post(self, request):
-        serializer = ProductSerializer(data=request.data)
+        serializer = ProductListCreateSerializer(
+            data=request.data, context={"request": request}
+        )
         if serializer.is_valid():
             # provide the category name not the category id when create a product
             try:
                 category_name = request.data.get("category")
                 category = Category.objects.get(name=category_name)
-                serializer.save(category=category)
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
+                product = serializer.save(category=category, user=request.user)
+                response_data = serializer.data
+                response_data["user"] = {
+                    "id": product.user.id,
+                    "username": product.user.first_name,
+                    "email": product.user.email,
+                }
+
+                return Response(response_data, status=status.HTTP_201_CREATED)
 
             except Category.DoesNotExist:
                 return Response(
@@ -37,40 +98,186 @@ class ProductListCreateView(APIView):
 
 
 class ProductRetrieveUpdateDestroyView(APIView):
+    @swagger_auto_schema(
+        responses={
+            200: "OK",
+            400: "Bad Request",
+            404: "Not Found",
+        },
+        operation_summary="Retrieve a product",
+        operation_description="Retrieve product details by its ID.",
+    )
     def get(self, request, pk):
         try:
             product = Product.objects.get(pk=pk)
-            serializer = ProductSerializer(product)
+            serializer = ProductRetrieveUpdateDestroySerializer(product)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except Product.DoesNotExist:
             return Response(
                 {"detail": "Product Does Not Exi."}, status=status.HTTP_404_NOT_FOUND
             )
 
-    def put(sefl, request, pk):
-        product = Product.objects.get(pk=pk)
-        serializer = ProductSerializer(product, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    @swagger_auto_schema(
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            properties={
+                "name": openapi.Schema(
+                    type=openapi.TYPE_STRING, description="Product name"
+                ),
+                "description": openapi.Schema(
+                    type=openapi.TYPE_STRING, description="Product description"
+                ),
+                "price": openapi.Schema(
+                    type=openapi.TYPE_NUMBER, description="Product price"
+                ),
+                "category": openapi.Schema(
+                    type=openapi.TYPE_STRING, description="Product category"
+                ),
+            },
+        ),
+        responses={
+            200: "OK",
+            400: "Bad Request",
+            404: "Not Found",
+        },
+        operation_summary="Full Update a product",
+        operation_description="Full Update an existing product with the given details.",
+        manual_parameters=[
+            openapi.Parameter(
+                name="Authorization",
+                in_=openapi.IN_HEADER,
+                type=openapi.TYPE_STRING,
+                description="Bearer token: 'Bearer {token}'",
+            ),
+        ],)
+    def put(self, request, pk):
+        try:
+            product = Product.objects.get(pk=pk)
+            serializer = ProductRetrieveUpdateDestroySerializer(
+                product,
+                data=request.data,
+            )
+            if serializer.is_valid() and request.user == product.user:
+                # Check if 'category' is present in the request data
+                if 'category' in request.data:
+                    # Update the category by fetching the category object
+                    category_name = request.data['category']
+                    try:
+                        category = Category.objects.get(name=category_name)
+                        product.category = category
+                    except Category.DoesNotExist:
+                        return Response(
+                            {"detail": "Category Does Not Exist."},
+                            status=status.HTTP_400_BAD_REQUEST,
+                        )
+                
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            else:
+                return Response(
+                    {"detail": "You do not have permission to update this product."},
+                    status=status.HTTP_403_FORBIDDEN,
+                )
+        except Product.DoesNotExist:
+            return Response(
+                {"detail": "Product Does Not Exist."}, status=status.HTTP_404_NOT_FOUND
+            )
 
+
+    @swagger_auto_schema(
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            properties={
+                "name": openapi.Schema(
+                    type=openapi.TYPE_STRING, description="Product name"
+                ),
+                "description": openapi.Schema(
+                    type=openapi.TYPE_STRING, description="Product description"
+                ),
+                "price": openapi.Schema(
+                    type=openapi.TYPE_NUMBER, description="Product price"
+                ),
+                "category": openapi.Schema(
+                    type=openapi.TYPE_STRING, description="Product category"
+                ),
+            },
+        ),
+        responses={
+            200: "OK",
+            400: "Bad Request",
+            404: "Not Found",
+        },
+        operation_summary="Partial Update a product",
+        operation_description="Partial Update an existing product with the given details.",
+        manual_parameters=[
+            openapi.Parameter(
+                name="Authorization",
+                in_=openapi.IN_HEADER,
+                type=openapi.TYPE_STRING,
+                description="Bearer token: 'Bearer {token}'",
+            ),
+        ],
+    )
     def patch(self, request, pk):
-        product = Product.objects.get(pk=pk)
-        serializer = ProductSerializer(product, data=request.data, partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            product = Product.objects.get(pk=pk)
+            serializer = ProductRetrieveUpdateDestroySerializer(
+                product,
+                data=request.data,
+                partial=True
+            )
+            if serializer.is_valid() and request.user == product.user:
+                # Check if 'category' is present in the request data
+                if 'category' in request.data:
+                    # Update the category by fetching the category object
+                    category_name = request.data['category']
+                    try:
+                        category = Category.objects.get(name=category_name)
+                        product.category = category
+                    except Category.DoesNotExist:
+                        return Response(
+                            {"detail": "Category Does Not Exist."},
+                            status=status.HTTP_400_BAD_REQUEST,
+                        )
+                
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            else:
+                return Response(
+                    {"detail": "You do not have permission to update this product."},
+                    status=status.HTTP_403_FORBIDDEN,
+                )
+        except Product.DoesNotExist:
+            return Response(
+                {"detail": "Product Does Not Exist."}, status=status.HTTP_404_NOT_FOUND
+            )
 
+    @swagger_auto_schema(
+        responses={status.HTTP_204_NO_CONTENT: "Product deleted successfully."},
+        manual_parameters=[
+            openapi.Parameter(
+                name="Authorization",
+                in_=openapi.IN_HEADER,
+                type=openapi.TYPE_STRING,
+                description="Bearer token: 'Bearer {token}'",
+            ),
+        ],
+    )
     def delete(self, request, pk):
         try:
             product = Product.objects.get(pk=pk)
-            product.delete()
-            return Response(
-                {"detail": "Product deleted successfully."},
-                status=status.HTTP_204_NO_CONTENT,
-            )
+            if request.user == product.user:
+                product.delete()
+                return Response(
+                    {"detail": "Product deleted successfully."},
+                    status=status.HTTP_204_NO_CONTENT,
+                )
+            else:
+                return Response(
+                    {"detail": "You do not have  permission to delete this product."},
+                    status=status.HTTP_403_FORBIDDEN,
+                )
+
         except Product.DoesNotExist:
             return Response(
                 {"detail": "Product Does Not Exi."}, status=status.HTTP_404_NOT_FOUND
@@ -78,6 +285,7 @@ class ProductRetrieveUpdateDestroyView(APIView):
 
 
 class ProductImageListCreateView(APIView):
+    # permission_classes = [IsOwnerOrReadOnly]
     parser_classes = (
         MultiPartParser,
         FormParser,
@@ -132,6 +340,7 @@ class ProductImageListCreateView(APIView):
 
 
 class ProductImageRetrieveUpdateDestroyView(generics.RetrieveUpdateAPIView):
+    # permission_classes = [IsOwnerOrReadOnly]
     queryset = ProductImage.objects.all()
     serializer_class = ProductImageSerializer
 
@@ -174,7 +383,7 @@ class ProductImageRetrieveUpdateDestroyView(generics.RetrieveUpdateAPIView):
                 {"detail": "Product Image Does Not Exist."},
                 status=status.HTTP_404_NOT_FOUND,
             )
-    
+
     def delete(self, request, product_id, image_id):
         try:
             product = Product.objects.get(pk=product_id)
@@ -199,6 +408,7 @@ class ProductImageRetrieveUpdateDestroyView(generics.RetrieveUpdateAPIView):
 
 
 class ProductImagesDeleteSingleImageView(APIView):
+    # permission_classes = [IsOwnerOrReadOnly]
     def delete(self, request, product_id, image_id):
         try:
             product = Product.objects.get(pk=product_id)
@@ -223,6 +433,7 @@ class ProductImagesDeleteSingleImageView(APIView):
 
 
 class ProductImagesDeleteAllImagesView(APIView):
+    # permission_classes = [IsOwnerOrReadOnly]
     def delete(self, request, product_id):
         try:
             product = Product.objects.get(pk=product_id)

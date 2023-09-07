@@ -7,8 +7,8 @@ from categories.models import Category
 
 
 @pytest.mark.django_db
-class TestCategoryUpdate:
-    
+class TestCategoryDelete:
+
     def test_admin_delete_category(self, api_client, create_category, admin_user):
         category = create_category(name='Test Category', description='This is a test category.')
         api_client.force_authenticate(user=admin_user)

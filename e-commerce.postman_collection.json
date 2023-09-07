@@ -276,7 +276,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"test0@gmail.com\",\n    \"first_name\": \"test0\"\n}\n\n",
+							"raw": "{\n    \"email\": \"test0@gmail.com\",\n    \"password\": \"test123\"\n}\n\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -500,11 +500,21 @@
 				{
 					"name": "Create Product",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjkzOTQ3NDY2LCJpYXQiOjE2OTM5NDM4NjYsImp0aSI6IjZlZTI5YjliODg4YTQzODRhYzY5MmY4Y2FmNGJkMTE4IiwidXNlcl9pZCI6NX0.31WTIje0fpBMAFsKLW-yAkpeVOztXtenTEfuXeu7Mis",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"Orange Juice\",\n    \"description\": \"Egyptian Orange Juice\",\n    \"price\": \"10.00\",\n    \"category\": 8\n}",
+							"raw": "{\n    \"name\": \"Light Tea drink\",\n    \"description\": \"Egyptian Light Tea created by test4\",\n    \"price\": \"10.00\",\n    \"category\": \"drinks category\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"

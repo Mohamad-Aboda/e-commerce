@@ -4,7 +4,8 @@ from rest_framework import status
 import pytest
 
 @pytest.mark.django_db
-class TestCategoryUpdate:
+class TestCategoryPartialUpdate:
+
     
     def test_admin_partial_update_category(self, api_client, create_category, admin_user):
         category = create_category(name='Test Category', description='This is a test category.')

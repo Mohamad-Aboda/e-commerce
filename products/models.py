@@ -1,9 +1,17 @@
 from django.db import models
+from django.contrib.auth import get_user_model
 
 from categories.models import Category
 from .utils import product_image_directory_path
 
+
+
+
+
+User = get_user_model()
+
 class Product(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
     description = models.TextField()
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
