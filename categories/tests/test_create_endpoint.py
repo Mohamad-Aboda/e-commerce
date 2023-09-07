@@ -7,6 +7,7 @@ import pytest
 @pytest.mark.django_db
 class TestCategoryCreate:
 
+
     def test_admin_create_category(self, api_client, create_category, admin_user):
         category = {'name': 'Test Category', 'description': 'This is a test category.'}
         api_client.force_authenticate(user=admin_user)
