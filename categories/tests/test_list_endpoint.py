@@ -5,7 +5,7 @@ import pytest
 
 
 @pytest.mark.django_db
-class TestCategoryUpdate:
+class TestCategoryList:
 
     def test_get_categories(self, create_category, api_client):
         create_category(name='Category 1', description='Description 1')
