@@ -14,7 +14,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/list-create/",
+							"raw": "http://127.0.0.1:8000/api/category/list-create/",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -25,6 +25,7 @@
 							"port": "8000",
 							"path": [
 								"api",
+								"category",
 								"list-create",
 								""
 							]
@@ -40,7 +41,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjkzMDQ5NjE1LCJpYXQiOjE2OTMwNDYwMTUsImp0aSI6IjUxMGE2YmZjODEzNzQ4M2VhOWE3YjdmMjQ2MmI4YmUzIiwidXNlcl9pZCI6NH0.cmDOssGArZnZpbykvSIvSS1lTojzvagvLAaJVW8lRhU",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk0MDEzNzQ2LCJpYXQiOjE2OTQwMTAxNDYsImp0aSI6Ijk5MTM0MDQ1Mjk5NzQyYTRhNjVkZGZkOGJlZGY2MjUxIiwidXNlcl9pZCI6MX0.diO_xNK87EHOuM6owRlYFTThgWbK2HFzz_h3jSpdZpY",
 									"type": "string"
 								}
 							]
@@ -49,7 +50,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\":\"cat1 name\",\n    \"description\":\"cat1 desc\"\n}",
+							"raw": "{\n    \"name\":\"foods\",\n    \"description\":\"foods category\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -57,7 +58,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/list-create/",
+							"raw": "http://127.0.0.1:8000/api/category/list-create/",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -68,6 +69,7 @@
 							"port": "8000",
 							"path": [
 								"api",
+								"category",
 								"list-create",
 								""
 							]
@@ -91,7 +93,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/retrive-update-delete/8/",
+							"raw": "http://127.0.0.1:8000/api/category/retrive-update-delete/8/",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -102,6 +104,7 @@
 							"port": "8000",
 							"path": [
 								"api",
+								"category",
 								"retrive-update-delete",
 								"8",
 								""
@@ -116,7 +119,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/retrive-update-delete/8/",
+							"raw": "http://127.0.0.1:8000/api/category/retrive-update-delete/8/",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -127,6 +130,7 @@
 							"port": "8000",
 							"path": [
 								"api",
+								"category",
 								"retrive-update-delete",
 								"8",
 								""
@@ -167,7 +171,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/retrive-update-delete/8/",
+							"raw": "http://127.0.0.1:8000/api/category/retrive-update-delete/8/",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -178,6 +182,7 @@
 							"port": "8000",
 							"path": [
 								"api",
+								"category",
 								"retrive-update-delete",
 								"8",
 								""
@@ -211,7 +216,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/retrive-update-delete/8/",
+							"raw": "http://127.0.0.1:8000/api/category/retrive-update-delete/8/",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -222,6 +227,7 @@
 							"port": "8000",
 							"path": [
 								"api",
+								"category",
 								"retrive-update-delete",
 								"8",
 								""
@@ -628,7 +634,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/products/1/images",
+							"raw": "http://127.0.0.1:8000/api/products/20/images",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -640,7 +646,7 @@
 							"path": [
 								"api",
 								"products",
-								"1",
+								"20",
 								"images"
 							]
 						}
