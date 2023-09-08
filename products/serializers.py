@@ -2,7 +2,6 @@ from rest_framework import serializers
 
 from .models import Product, ProductImage
 
-
 class ProductListCreateSerializer(serializers.ModelSerializer):
     category = serializers.StringRelatedField()
     user = serializers.SerializerMethodField()
@@ -17,12 +16,14 @@ class ProductListCreateSerializer(serializers.ModelSerializer):
             "username": obj.user.first_name,
             "email": obj.user.email,
         }
-    def validate_name(self, value):
-        user = self.context['request'].user
-        if Product.objects.filter(name=value, user=user).exists():
-            raise serializers.ValidationError('You already have a product with this name.')
-        return value
 
+    def validate_name(self, value):
+        user = self.context["request"].user
+        if Product.objects.filter(name=value, user=user).exists():
+            raise serializers.ValidationError(
+                "You already have a product with this name."
+            )
+        return value
 
 class ProductRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     category = serializers.StringRelatedField()
@@ -38,7 +39,6 @@ class ProductRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             "username": obj.user.first_name,
             "email": obj.user.email,
         }
-
 
 class ProductImageSerializer(serializers.ModelSerializer):
     class Meta:
