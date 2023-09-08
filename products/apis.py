@@ -98,6 +98,12 @@ class ProductListCreateView(APIView):
 
 
 class ProductRetrieveUpdateDestroyView(APIView):
+    def get_permissions(self):
+        if self.request.method in ['PUT', 'PATCH', 'DELETE']:  # Apply IsAdminOrReadOnly permission for PUT, PATCH, DELETE methods
+            permission_classes = [IsAuthenticated]
+        else:  # For other methods, use default permissions (AllowAny)
+            permission_classes = [AllowAny]
+        return [permission() for permission in permission_classes]
     @swagger_auto_schema(
         responses={
             200: "OK",
@@ -285,14 +291,25 @@ class ProductRetrieveUpdateDestroyView(APIView):
 
 
 class ProductImageListCreateView(APIView):
-    # permission_classes = [IsOwnerOrReadOnly]
     parser_classes = (
         MultiPartParser,
         FormParser,
     )
 
+    def get_permissions(self):
+        if self.request.method == "POST":
+            permission_classes = [IsAuthenticated]
+        else:
+            permission_classes = [AllowAny]
+        return [permission() for permission in permission_classes]
+
     """ List all images for single product based on the product id """
 
+    @swagger_auto_schema(
+        responses={status.HTTP_200_OK: ProductImageSerializer(many=True)},
+        operation_summary="List images for a single product",
+        operation_description="Retrieve a list of all images for a single product based on the product ID.",
+    )
     def get(self, request, product_id):
         try:
             product = Product.objects.get(pk=product_id)
@@ -321,29 +338,56 @@ class ProductImageListCreateView(APIView):
             for image_file in request.FILES.getlist("image"):
                 image_data = {"image": image_file, "product": product.id}
                 serializer = ProductImageSerializer(data=image_data)
+                if request.user == product.user:
+                    if serializer.is_valid():
+                        serializer.save(product=product)
+                        uploaded_images.append(serializer.data)
+                    else:
+                        return Response(
+                            serializer.errors, status=status.HTTP_400_BAD_REQUEST
+                        )
+                else:
+                    return Response(
+                    {"detail": "Yon don't have permissions to upload image for this product."}, status=status.HTTP_404_NOT_FOUND
+                )
+        else:
+            """Handel Single Images Upload"""
+            serializer = ProductImageSerializer(data=request.data)
+            if request.user == product.user:
                 if serializer.is_valid():
                     serializer.save(product=product)
                     uploaded_images.append(serializer.data)
                 else:
-                    return Response(
-                        serializer.errors, status=status.HTTP_400_BAD_REQUEST
-                    )
-        else:
-            """Handel Single Images Upload"""
-            serializer = ProductImageSerializer(data=request.data)
-            if serializer.is_valid():
-                serializer.save(product=product)
-                uploaded_images.append(serializer.data)
+                    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
             else:
-                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                return Response(
+                {"detail": "Yon don't have permissions to upload image for this product."}, status=status.HTTP_404_NOT_FOUND
+            )
+
         return Response(uploaded_images, status=status.HTTP_201_CREATED)
 
 
 class ProductImageRetrieveUpdateDestroyView(generics.RetrieveUpdateAPIView):
-    # permission_classes = [IsOwnerOrReadOnly]
+    def get_permissions(self):
+        if self.request.method in ['PUT', 'PATCH', 'DELETE']: 
+            permission_classes = [IsAuthenticated]
+        else:  # For other methods, use default permissions (AllowAny)
+            permission_classes = [AllowAny]
+        return [permission() for permission in permission_classes]
+    
     queryset = ProductImage.objects.all()
     serializer_class = ProductImageSerializer
 
+
+    @swagger_auto_schema(
+        responses={
+            200: "OK",
+            400: "Bad Request",
+            404: "Not Found",
+        },
+        operation_summary="Retrieve a product image",
+        operation_description="Retrieve a product image by its ID.",
+    )
     def get(self, request, product_id, image_id):
         try:
             product = Product.objects.get(pk=product_id)
@@ -374,7 +418,7 @@ class ProductImageRetrieveUpdateDestroyView(generics.RetrieveUpdateAPIView):
             image = ProductImage.objects.get(pk=image_id, product=product)
             serializer = ProductImageSerializer(image, data=request.data)
 
-            if serializer.is_valid():
+            if serializer.is_valid() and product.user == request.user:
                 serializer.save(product=product)
                 return Response(serializer.data, status=status.HTTP_200_OK)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -384,6 +428,17 @@ class ProductImageRetrieveUpdateDestroyView(generics.RetrieveUpdateAPIView):
                 status=status.HTTP_404_NOT_FOUND,
             )
 
+    @swagger_auto_schema(
+        responses={status.HTTP_204_NO_CONTENT: "Product Image deleted successfully."},
+        manual_parameters=[
+            openapi.Parameter(
+                name="Authorization",
+                in_=openapi.IN_HEADER,
+                type=openapi.TYPE_STRING,
+                description="Bearer token: 'Bearer {token}'",
+            ),
+        ],
+    )
     def delete(self, request, product_id, image_id):
         try:
             product = Product.objects.get(pk=product_id)
@@ -399,41 +454,32 @@ class ProductImageRetrieveUpdateDestroyView(generics.RetrieveUpdateAPIView):
                 {"detail": "Product Image Does Not Exist."},
                 status=status.HTTP_404_NOT_FOUND,
             )
-
-        image.delete()
-        return Response(
-            {"detail": "Product Image deleted successfully."},
-            status=status.HTTP_204_NO_CONTENT,
-        )
-
-
-class ProductImagesDeleteSingleImageView(APIView):
-    # permission_classes = [IsOwnerOrReadOnly]
-    def delete(self, request, product_id, image_id):
-        try:
-            product = Product.objects.get(pk=product_id)
-        except Product.DoesNotExist:
+        if product.user == request.user:
+            image.delete()
             return Response(
-                {"detail": "Product Does Not Exist."}, status=status.HTTP_404_NOT_FOUND
+                {"detail": "Product Image deleted successfully."},
+                status=status.HTTP_204_NO_CONTENT,
             )
-
-        try:
-            image = ProductImage.objects.get(pk=image_id, product=product)
-        except ProductImage.DoesNotExist:
+        else:    
             return Response(
-                {"detail": "Product Image Does Not Exist."},
-                status=status.HTTP_404_NOT_FOUND,
+                {"detail": "You do not have  permission to delete this image."},
+                status=status.HTTP_403_FORBIDDEN,
             )
-
-        image.delete()
-        return Response(
-            {"detail": "Product Image deleted successfully."},
-            status=status.HTTP_204_NO_CONTENT,
-        )
 
 
 class ProductImagesDeleteAllImagesView(APIView):
     # permission_classes = [IsOwnerOrReadOnly]
+    @swagger_auto_schema(
+        responses={status.HTTP_204_NO_CONTENT: "All Product Images deleted successfully."},
+        manual_parameters=[
+            openapi.Parameter(
+                name="Authorization",
+                in_=openapi.IN_HEADER,
+                type=openapi.TYPE_STRING,
+                description="Bearer token: 'Bearer {token}'",
+            ),
+        ],
+    )
     def delete(self, request, product_id):
         try:
             product = Product.objects.get(pk=product_id)
@@ -442,8 +488,19 @@ class ProductImagesDeleteAllImagesView(APIView):
                 {"detail": "Product Does Not Exist."}, status=status.HTTP_404_NOT_FOUND
             )
 
-        ProductImage.objects.filter(product=product).delete()
-        return Response(
-            {"detail": "All Product Images deleted successfully."},
-            status=status.HTTP_204_NO_CONTENT,
-        )
+        if request.user == product.user:
+            ProductImage.objects.filter(product=product).delete()
+            return Response(
+                {"detail": "All Product Images deleted successfully."},
+                status=status.HTTP_204_NO_CONTENT,
+            )
+        else:
+            return Response(
+                {"detail": "You do not have  permission to delete this image."},
+                status=status.HTTP_403_FORBIDDEN,
+            )
+
+
+# still not implemented the tests for create and udpate product images
+# still not implemented swagger for create and update product images
+
