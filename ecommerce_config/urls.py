@@ -24,6 +24,7 @@ urlpatterns = [
     path("api/", include("accounts.urls", namespace="accounts")),
     path("api/", include("categories.urls", namespace="categories")),
     path("api/", include("products.urls", namespace="products")),
+    path("api/", include("orders.urls", namespace="orders")),
     
     
     path('swagger(?P<format>\.json|\.yaml)', schema_view.without_ui(cache_timeout=0),
