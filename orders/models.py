@@ -10,7 +10,15 @@ class Order(models.Model):
     order_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.user.username
+        return f"Oder Number ({self.pk})"
+    
+    def calculate_total_price(self):
+        total_price = 0
+        for item in self.items.all():
+            total_price += item.product.price * item.quantity
+        return total_price
+
+
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, related_name='items' , on_delete=models.CASCADE)
@@ -18,6 +26,6 @@ class OrderItem(models.Model):
     quantity = models.PositiveIntegerField()
 
     def __str__(self):
-        return self.order
+        return f"Order Number ( {self.pk} ) For {self.order}"
 
 
