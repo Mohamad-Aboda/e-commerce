@@ -50,3 +50,18 @@ class ProductRetrieveDestroyPermission(permissions.BasePermission):
         # Check if the user is authenticated for POST requests.
         if request.method == 'DELETE' or request.method == 'GET':
             return IsOrderOwnerOrReadOnly().has_permission(request, view)
+
+
+class ProductItemPermission(permissions.BasePermission):
+    """
+    Custom permission combining multiple permissions.
+    """
+    
+    def has_permission(self, request, view):
+
+        # Check if the user is authenticated for POST requests.
+        if request.method == 'GET' or request.method == 'POST' :
+            return IsOrderOwnerOrReadOnly().has_permission(request, view)
+        
+        if request.method == 'DELETE' or request.method == 'PUT':
+            return IsOrderOwnerOrReadOnly().has_permission(request, view)
