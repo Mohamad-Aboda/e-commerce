@@ -20,6 +20,14 @@ class OrderItemSerializer(serializers.ModelSerializer):
         model = OrderItem
         exclude = ('order',)
 
+
+class OrderItemCreateUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = OrderItem
+        fields = ('product', 'quantity')
+
+
+
 class OrderSerializer(serializers.ModelSerializer):
     order_id = serializers.IntegerField(source='id')  # Rename 'id' to 'order_id'
     items = OrderItemSerializer(many=True, read_only=True)
@@ -46,8 +54,3 @@ class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         exclude = ('id', )
-
-
-
-
-
