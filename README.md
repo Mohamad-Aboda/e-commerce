@@ -1,4 +1,4 @@
-<h1 align="center">Blog Application</h1>
+<h1 align="center">Ecommerce</h1>
 
 ### Description
 
