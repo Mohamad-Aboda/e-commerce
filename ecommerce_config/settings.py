@@ -17,7 +17,7 @@ SECRET_KEY = config('SECRET_KEY')
 DEBUG = config('DEBUG', default=False, cast=bool)
 
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0',]
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -138,29 +138,18 @@ REST_FRAMEWORK = {
     # ... other settings ...
 }
 
-if os.environ.get('DOCKER_ENV') == 'true':
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': config('DB_NAME'),
-            'USER': config('DB_USER'),
-            'PASSWORD': config('DB_PASSWORD'),
-            'HOST': config('DB_HOST'),
-            'PORT': config('DB_PORT'),
-        }
-    }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': config('DB_NAME'),
-            'USER': config('DB_USER'),
-            'PASSWORD': config('DB_PASSWORD'),
-            'HOST': 'localhost',
-            'PORT': config('DB_PORT'),
-        }
-    }
 
+
+DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME':'ecommerce_db',
+            'USER': 'ecommerce_user',
+            'PASSWORD': 'dbpassword',
+            'HOST': 'db',
+            'PORT': '5432',
+        }
+}
 
 
 SIMPLE_JWT = {
