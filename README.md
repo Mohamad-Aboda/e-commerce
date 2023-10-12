@@ -66,3 +66,11 @@ http://localhost:8000/
  http://127.0.0.1:8000/redoc/
 
 ```
+![-------------------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png)
+
+### 8. Test Endpints Live
+
+```
+http://18.116.235.64:8000/swagger/
+
+```
