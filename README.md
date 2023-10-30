@@ -26,7 +26,7 @@ $. env\Scripts\activate
 
 ![-------------------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png)
 
-#### 2. Installing Dependencies:
+#### Installing Dependencies:
 
 ```
  pip install wheel
@@ -35,7 +35,7 @@ $. env\Scripts\activate
 
 ![-------------------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png)
 
-#### 3. Create Database Tables and Superuser:
+#### Create Database Tables and Superuser:
 
 ```
 Note: For Windows Users Replace python3 with python
@@ -47,22 +47,33 @@ Note: For Windows Users Replace python3 with python
 
 ![-------------------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png)
 
-### 6. Run Server
+### Run Server
 
 ```
  python3 manage.py runserver
 ```
 
-### 9. Go Live :
+![-------------------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png)
+
+### 2 Docker Setup :
+```
+ docker-compose up --build
+```
+
+### Access the endpoints :
 
 http://localhost:8000/
 
-![-------------------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/rainbow.png)
 
-### 7. Endpoints
+### Endpoints
 
 ```
  http://127.0.0.1:8000/swagger/
  http://127.0.0.1:8000/redoc/
 
+```
+
+### Test Endpoints Live
+```
+http://13.59.210.23:8000/swagger/
 ```
