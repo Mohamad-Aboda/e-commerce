@@ -76,4 +76,6 @@ http://localhost:8000/
 ### Test Endpoints Live
 ```
 http://13.59.210.23:8000/swagger/
+http://13.59.210.23:8000/redoc/
+
 ```
