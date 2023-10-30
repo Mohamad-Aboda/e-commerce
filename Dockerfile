@@ -1,20 +1,30 @@
-# Use an official Python lightweight image
+# Use an official Python runtime as a parent image
 FROM python:3.8-slim
 
-# Set the working directory to /app
+# Set environment variables for Python
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+# Set working directory within the container
 WORKDIR /app
 
-# Copy only the requirements file to leverage Docker cache
-COPY requirements.txt /app/
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    libpq-dev \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Install dependencies
+# Install Python dependencies
+COPY requirements.txt /app/
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the rest of the application
+# Copy the current directory contents into the container at /app
 COPY . /app/
 
-# Set environment variables
-ENV DJANGO_SETTINGS_MODULE=ecommerce_config.settings
+# Copy the entrypoint script into the container
+COPY entrypoint.sh /app/entrypoint.sh
 
-# Run the command to start the Django development server
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+# Make the entrypoint script executable
+RUN chmod +x /app/entrypoint.sh
+
+# Set the entrypoint to the script
+ENTRYPOINT ["/app/entrypoint.sh"]
