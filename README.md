@@ -1,5 +1,4 @@
 # [Ecommerce Backend](http://3.144.124.187:8000/swagger/)
-[Swagger](https://swagger.io/)
 RESTFUL API for e-commerce paltform with multiple integrated modules.
 
 ## Table of Content
